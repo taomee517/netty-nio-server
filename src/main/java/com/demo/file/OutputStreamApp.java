@@ -17,7 +17,7 @@ public class OutputStreamApp {
         for(int i=0;i<msg.length;i++){
             byteBuffer.put(msg[i]);
         }
-        FileOutputStream fileOutputStream = new FileOutputStream("output.txt");
+        FileOutputStream fileOutputStream = new FileOutputStream("src\\main\\resources\\output.txt");
         FileChannel fileChannel = fileOutputStream.getChannel();
         byteBuffer.flip();
         fileChannel.write(byteBuffer);
