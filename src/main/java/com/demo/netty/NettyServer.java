@@ -1,4 +1,4 @@
-package com.demo;
+package com.demo.netty;
 
 import com.demo.pojo.Worker;
 
