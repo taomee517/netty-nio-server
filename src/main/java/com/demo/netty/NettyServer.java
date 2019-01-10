@@ -17,8 +17,7 @@ public class NettyServer{
         try {
             String text = "WEARETHECHAMPIONS";
             List<String> arr = Arrays.asList("we","are","the","champions");
-            for (String word:arr
-            ) {
+            for (String word:arr) {
                 System.out.print(word);
                 System.out.printf(" ");
             }

@@ -31,9 +31,11 @@
 
   <dependencies>
 
+    <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
     <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-core</artifactId>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-all</artifactId>
+      <version>4.1.32.Final</version>
     </dependency>
 
     <!-- logging -->
