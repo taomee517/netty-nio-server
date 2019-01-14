@@ -1,7 +1,5 @@
 package com.demo.nio;
 
-import sun.misc.VM;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -73,7 +71,6 @@ public class NioSelectorChat {
                    }
                    msgBuffer.flip();
                    socketChannel.write(msgBuffer);
-                   VM.isBooted();
                }
             }
         }
