@@ -1,4 +1,4 @@
-package com.demo.netty.server;
+package com.demo.netty.echo.server;
 
 import com.demo.netty.constant.DefaultValue;
 import io.netty.bootstrap.ServerBootstrap;
