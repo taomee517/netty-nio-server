@@ -1,4 +1,4 @@
-package com.demo.netty;
+package com.demo.jdk8;
 
 import com.demo.pojo.Worker;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * @date  2018/12/22
  * @time  11:14
  */
-public class NettyServer{
+public class CollectionStreamDemo {
 
     public static void main(String[] args){
         try {
