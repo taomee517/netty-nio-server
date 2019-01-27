@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>web socket客户端</title>
+</head>
+<body>
+    <form onsubmit="return false">
+        <textarea id = "message" style="width: 400px;height: 200px"></textarea>
+        <input type="button" onclick="send(this.form.message.value)" value="发送消息">
+        <h3>服务器发送内容</h3>
+        <textarea id="receivedMsg" style="width: 400px;height: 300px"></textarea>
+        <input type="button" onclick="javascript:document.getElementById('receivedMsg').value = ''" value="清空内容">
+    </form>
+
+    <script type="text/javascript">
+        var socket;
+        var msg = document.getElementById("message");
+        var receivedMsg = document.getElementById("receivedMsg");
+        if(window.WebSocket){
+            socket = new WebSocket("ws://127.0.0.1:8001/ws");
+            socket.onmessage = function (ev) {
+                receivedMsg.value = receivedMsg.value + "\n发出消息：" + msg.value + "\n" + ev.data;
+            }
+            socket.onopen = function (ev) {
+                receivedMsg.value = "成功建立连接";
+            }
+            socket.onclose = function (ev) {
+                receivedMsg.value = receivedMsg.value + "\n发出消息：" + msg.value + "\t连接关闭";
+            }
+        }else{
+            alert("浏览器不支持websocket")
+        }
+
+        function send(text) {
+            var msg = document.getElementById("message").value;
+            if(!window.WebSocket){
+                return
+            }
+            if(socket.readyState == WebSocket.OPEN){
+                socket.send(text);
+            }else{
+                alert("websocket连接尚未开启")
+            }
+        }
+    </script>
+</body>
+</html>
