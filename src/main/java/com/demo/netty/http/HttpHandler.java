@@ -7,6 +7,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 
+import java.net.SocketAddress;
+
 /**
  * Netty Http案例客户端请求处理类
  *
@@ -18,6 +20,8 @@ import io.netty.handler.codec.http.*;
 public class HttpHandler extends SimpleChannelInboundHandler<HttpObject> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
+        SocketAddress addr = ctx.channel().remoteAddress();
+        System.out.println(addr);
         System.out.println(msg.getClass());
         if(msg instanceof HttpRequest){
             HttpRequest request = (HttpRequest)msg;
