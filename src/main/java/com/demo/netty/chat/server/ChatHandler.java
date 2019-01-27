@@ -49,6 +49,8 @@ public class ChatHandler extends SimpleChannelInboundHandler<String> {
         SocketAddress addr = channel.remoteAddress();
         String content = "客户端：" + addr + "离开\n";
         channels.writeAndFlush(content);
+        //验证handlerRemoved自动删除channel
+        System.out.println(channels.size());
     }
 
     @Override
@@ -69,7 +71,6 @@ public class ChatHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        cause.printStackTrace();
         ctx.close();
     }
 }

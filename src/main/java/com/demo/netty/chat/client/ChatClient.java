@@ -26,6 +26,7 @@ public class ChatClient {
             Channel channel = bootstrap.connect(DefaultValue.DEFAULT_TEST_IP,DefaultValue.DEFAULT_TEST_PORT).sync().channel();
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             while (true){
+                //'/r/n'是lineBasedFrameCodec的delimiter
                 channel.writeAndFlush(br.readLine() + "\r\n");
             }
         } catch (InterruptedException e) {
