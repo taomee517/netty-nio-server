@@ -17,6 +17,10 @@ public class SliceBufferApp {
             byteBuffer.put((byte) i);
         }
         byteBuffer.flip();
+//        byte[] bytes = new byte[10];
+//        byteBuffer.get(bytes,0,byteBuffer.capacity());
+//        String str = new String(bytes);
+//        System.out.println(str);
         System.out.println("==========slice操作前==========");
         while (byteBuffer.hasRemaining()){
             System.out.println(byteBuffer.get());
@@ -27,7 +31,7 @@ public class SliceBufferApp {
             byte b = sliceByteBuffer.get(i);
             b *= 2;
             sliceByteBuffer.put(b);
-        }
+    }
         byteBuffer.position(0).limit(byteBuffer.capacity());
         System.out.println("==========slice操作后==========");
         while (byteBuffer.hasRemaining()){

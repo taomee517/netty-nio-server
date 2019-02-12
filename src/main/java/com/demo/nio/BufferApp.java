@@ -2,6 +2,7 @@ package com.demo.nio;
 
 import java.nio.IntBuffer;
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 /**
  * @author LuoTao
@@ -23,6 +24,7 @@ public class BufferApp {
             buffer.put(num);
         }
         buffer.flip();
+//        Arrays.sort(buffer.array());
         int index = 0;
         while (buffer.hasRemaining()){
             index ++;
