@@ -9,6 +9,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 
 /**
  * @author LuoTao
@@ -23,7 +25,9 @@ public class NettyServer {
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
             final MyChannelHandler echoHandler = new MyChannelHandler();
-            bootstrap.group(boss,worker).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
+            bootstrap.group(boss,worker).channel(NioServerSocketChannel.class)
+                    .handler(new LoggingHandler(LogLevel.WARN))
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch){
                     ChannelPipeline pipeline = ch.pipeline();
