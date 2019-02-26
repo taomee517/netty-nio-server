@@ -3,6 +3,7 @@ package com.demo.bytebuf;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 public class ByteBufDemo {
@@ -19,9 +20,19 @@ public class ByteBufDemo {
             String s = new String(bs);
             System.out.print(s);
         }
+        byte[] allBytes = buf.array();
+        String bout = "";
+        try {
+            bout = new String(allBytes,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         System.out.println();
         String charSet = "utf-8";
         String out = buf.toString(Charset.forName(charSet));
         System.out.println("ToString with "+ charSet.toUpperCase() +":" + out);
+        System.out.println(bout);
+        System.out.println(allBytes.length);
+        System.out.println(text.getBytes().length);
     }
 }
