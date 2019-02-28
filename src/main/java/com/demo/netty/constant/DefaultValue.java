@@ -9,7 +9,7 @@ public class DefaultValue {
     /**默认字符集*/
     public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
     /**默认Netty Boss/Worker线程数*/
-    public static final int DEFAULT_BOSS_THREAD = 2;
+    public static final int DEFAULT_BOSS_THREAD = 1;
     public static final int DEFAULT_WORKER_THREAD = 16;
     /**单条消息最大长度限制*/
     public static final int MSG_MAX_SIZE = 512;
