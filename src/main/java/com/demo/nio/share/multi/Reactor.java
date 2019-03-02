@@ -8,6 +8,8 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -20,6 +22,7 @@ import java.util.Set;
 public class Reactor implements Runnable {
     final Selector selector;
     final ServerSocketChannel channel;
+    ExecutorService worker = Executors.newFixedThreadPool(4);
 
 
     public Reactor(int port) throws Exception{
@@ -64,7 +67,7 @@ public class Reactor implements Runnable {
             try {
                 SocketChannel socketChannel = channel.accept();
                 if(socketChannel!=null){
-                    new Handler(selector,socketChannel);
+                    worker.execute( new Handler(selector,socketChannel));
                 }
             } catch (Exception e) {
                 e.printStackTrace();

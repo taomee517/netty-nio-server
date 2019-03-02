@@ -14,7 +14,6 @@ public class NioMultiDemo {
     public static void main(String[] args) {
         try {
             ExecutorService boss = Executors.newFixedThreadPool(1);
-            ExecutorService worker = Executors.newFixedThreadPool(4);
             Reactor reactor = new Reactor(8001);
             boss.execute(reactor);
         } catch (Exception e) {

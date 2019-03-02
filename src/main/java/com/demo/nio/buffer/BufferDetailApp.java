@@ -1,4 +1,4 @@
-package com.demo.nio;
+package com.demo.nio.buffer;
 
 import java.nio.IntBuffer;
 import java.security.SecureRandom;

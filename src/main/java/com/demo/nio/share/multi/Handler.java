@@ -14,11 +14,7 @@ import java.nio.charset.Charset;
 public class Handler implements Runnable {
     final SocketChannel socket;
     final SelectionKey selectionKey;
-    ByteBuffer input = ByteBuffer.allocate(1024);
-    ByteBuffer output = ByteBuffer.allocate(1024);
-    static final int READING = 0;
-    static final int SENDING = 1;
-    int state = READING;
+    ByteBuffer buffer = ByteBuffer.allocate(1024);
     boolean flag;
 
     Handler(Selector selector,SocketChannel channel) throws Exception{
@@ -38,19 +34,23 @@ public class Handler implements Runnable {
     }
 
     void process(){
-        String in = new String(input.array(), Charset.forName("utf-8"));
-        System.out.println(in);
-        String out = "Handing Success!";
-        output.put(out.getBytes());
+        byte[] bytes = new byte[1024];
+        for(int i = buffer.position();i<buffer.limit();i++){
+            bytes[i] = buffer.get();
+        }
+        System.out.println(new String(bytes,Charset.forName("utf-8")));
+        String out = "Handing Success!\n";
+        buffer.clear();
+        buffer.put(out.getBytes());
         flag = true;
     }
 
     @Override
     public void run() {
         try {
-            if(state == READING){
+            if(selectionKey.isReadable()){
                 read();
-            }else if(state == SENDING){
+            }else if(selectionKey.isWritable()){
                 send();
             }
         } catch (Exception e) {
@@ -59,18 +59,20 @@ public class Handler implements Runnable {
     }
 
     public void read() throws Exception{
-        socket.read(input);
+        buffer.clear();
+        socket.read(buffer);
+        buffer.flip();
         if(inputComplete()){
             process();
-            state = SENDING;
             selectionKey.interestOps(SelectionKey.OP_WRITE);
         }
     }
 
     public void send() throws Exception{
-        socket.write(output);
+        buffer.flip();
+        socket.write(buffer);
         if(outputComplete()){
-            selectionKey.cancel();
+            selectionKey.interestOps(SelectionKey.OP_READ);
         }
     }
 }

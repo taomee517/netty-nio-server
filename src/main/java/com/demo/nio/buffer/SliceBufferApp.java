@@ -1,8 +1,6 @@
-package com.demo.nio;
+package com.demo.nio.buffer;
 
-import javax.sound.midi.Soundbank;
 import java.nio.ByteBuffer;
-import java.security.SecureRandom;
 
 /**
  * @author LuoTao
