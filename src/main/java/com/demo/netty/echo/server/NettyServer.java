@@ -20,20 +20,19 @@ import io.netty.handler.logging.LoggingHandler;
  */
 public class NettyServer {
     public static void main(String[] args) {
-        EventLoopGroup boss = new NioEventLoopGroup();
+        EventLoopGroup boss = new NioEventLoopGroup(1);
         EventLoopGroup worker = new NioEventLoopGroup();
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
             final MyChannelHandler echoHandler = new MyChannelHandler();
             bootstrap.group(boss,worker).channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.WARN))
+                    .handler(new LoggingHandler(LogLevel.DEBUG))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                protected void initChannel(SocketChannel ch){
-                    ChannelPipeline pipeline = ch.pipeline();
-//                    pipeline.addLast(new MyDecoder());
-                    pipeline.addLast(echoHandler);
-                }
+                        @Override
+                        protected void initChannel(SocketChannel ch){
+                            ChannelPipeline pipeline = ch.pipeline();
+                            pipeline.addLast(echoHandler);
+                        }
             });
             ChannelFuture future = bootstrap.bind(DefaultValue.DEFAULT_TEST_PORT).sync();
             future.channel().closeFuture().sync();

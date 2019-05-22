@@ -35,6 +35,11 @@ public class ServerHandler implements Runnable {
             while((len = in.read(bytes))>0) {
                 msg = new String(bytes, 0, len);
                 System.out.println("收到客户端消息！" + msg);
+                try {
+                    Thread.sleep(90000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 out = socket.getOutputStream();
                 out.write(msg.getBytes());
             }

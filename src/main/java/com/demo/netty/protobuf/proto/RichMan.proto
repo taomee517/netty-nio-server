@@ -1,0 +1,28 @@
+syntax="proto3";
+
+package netty;
+
+option java_package = "com.demo.netty.protobuf.pojo";
+option java_outer_classname = "RichManProto";
+
+message RichMan{
+    int32 id = 1;
+    string name = 2;
+    string email = 3;
+    repeated Car cars = 4;
+
+    enum CarBrand{
+        BENZ = 0;
+        LAMBORGHINI = 1;
+        PORSCHE = 2;
+        AUQI = 3;
+    }
+
+    message Car{
+        CarBrand brand = 1;
+        string name = 2;
+    }
+
+}
+
+

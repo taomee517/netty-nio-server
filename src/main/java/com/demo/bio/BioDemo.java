@@ -32,11 +32,11 @@ public class BioDemo {
                     String msg = new String(bytes, Charset.forName("utf-8"));
                     System.out.println("收到客户端消息！" + msg);
                     //如果IO是一个非常耗时的操作，则无法处理并发访问
-//                    try {
-//                        Thread.sleep(20000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+                    try {
+                        Thread.sleep(20000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     out = socket.getOutputStream();
                     out.write(msg.getBytes());
                 }

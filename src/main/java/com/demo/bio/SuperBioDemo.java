@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
  */
 public class SuperBioDemo {
     public static void main(String[] args) {
-        ExecutorService executor = Executors.newFixedThreadPool(20);
+        ExecutorService executor = Executors.newFixedThreadPool(8);
         try {
             ServerSocket server = new ServerSocket();
             server.bind(new InetSocketAddress(8001));

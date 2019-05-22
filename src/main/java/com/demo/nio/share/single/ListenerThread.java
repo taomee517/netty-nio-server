@@ -41,7 +41,8 @@ public class ListenerThread extends Thread {
                             ServerSocketChannel serverChannel = (ServerSocketChannel) key.channel();
                             SocketChannel channel = serverChannel.accept();
                             channel.configureBlocking(false);
-                            channel.register(this.selector, SelectionKey.OP_READ);
+//                            channel.register(this.selector, SelectionKey.OP_READ);
+
                         } else if (key.isReadable()){
                             System.out.println("Accpting command!");
                             SocketChannel channel = (SocketChannel) key.channel();
