@@ -1,6 +1,6 @@
 package com.demo.netty.http;
 
-import com.demo.netty.constant.DefaultValue;
+import com.demo.netty.basic.constant.DefaultValue;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;

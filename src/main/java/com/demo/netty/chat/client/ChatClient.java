@@ -1,6 +1,6 @@
 package com.demo.netty.chat.client;
 
-import com.demo.netty.constant.DefaultValue;
+import com.demo.netty.basic.constant.DefaultValue;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;

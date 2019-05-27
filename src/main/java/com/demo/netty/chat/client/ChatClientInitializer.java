@@ -1,6 +1,6 @@
 package com.demo.netty.chat.client;
 
-import com.demo.netty.constant.DefaultValue;
+import com.demo.netty.basic.constant.DefaultValue;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;

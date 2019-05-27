@@ -1,4 +1,4 @@
-package com.demo.netty.constant;
+package com.demo.netty.basic.constant;
 
 import java.nio.charset.Charset;
 
