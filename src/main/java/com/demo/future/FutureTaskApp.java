@@ -1,5 +1,7 @@
 package com.demo.future;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.*;
 
 /**
@@ -8,6 +10,7 @@ import java.util.concurrent.*;
  * @date  2018/12/26
  * @time  8:47
  */
+@Slf4j
 public class FutureTaskApp {
     public static void main(String[] args) throws Exception {
         long startTime = System.currentTimeMillis();
@@ -15,11 +18,11 @@ public class FutureTaskApp {
         Callable<Tool> callable = new Callable<Tool>() {
             @Override
             public Tool call() throws Exception {
-                System.out.println("网购厨具:下单");
-                System.out.println("网购厨具:付款");
+                log.info("网购厨具:下单");
+                log.info("网购厨具:付款");
                 Thread.sleep(3000);
-                System.out.println("====================");
-                System.out.println("网购厨具:收到厨具");
+                log.info("====================");
+                log.info("网购厨具:收到厨具");
                 return new Tool();
             }
         };
@@ -27,15 +30,15 @@ public class FutureTaskApp {
         FutureTask<Tool> task = new FutureTask<Tool>(callable);
         new Thread(task).start();
         Food food = new Food();
-        System.out.println("准备食材:已到位!");
+        log.info("准备食材:已到位!");
 
         if(!task.isDone()){
-            System.out.println("网购厨具:还没收到厨具,请联系快递95886");
+            log.info("网购厨具:还没收到厨具,请联系快递95886");
         }
         Tool tool = task.get();
         cook(food,tool);
         long endTime = System.currentTimeMillis();
-        System.out.println("全部就位,开始做饭!总耗时:"+ (endTime-startTime) + "ms");
+        log.info("全部就位,开始做饭!总耗时:"+ (endTime-startTime) + "ms");
 
 
     }

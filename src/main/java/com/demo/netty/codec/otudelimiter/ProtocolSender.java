@@ -1,4 +1,4 @@
-package com.demo.netty.tcppackage;
+package com.demo.netty.codec.otudelimiter;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

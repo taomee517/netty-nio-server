@@ -1,4 +1,4 @@
-package com.demo.netty.codec;
+package com.demo.netty.codec.lengthbase;
 
 public class Msg {
     private int length;

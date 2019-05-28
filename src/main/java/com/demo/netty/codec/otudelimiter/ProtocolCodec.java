@@ -1,4 +1,4 @@
-package com.demo.netty.tcppackage;
+package com.demo.netty.codec.otudelimiter;
 
 import com.fzk.otu.api.upstream.decode.OtuDecoder;
 import com.fzk.sdk.common.SessionContext;

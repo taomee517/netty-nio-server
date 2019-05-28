@@ -1,6 +1,5 @@
-package com.demo.netty.tcppackage;
+package com.demo.netty.codec.otudelimiter;
 
-import com.demo.netty.basic.constant.DefaultValue;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
