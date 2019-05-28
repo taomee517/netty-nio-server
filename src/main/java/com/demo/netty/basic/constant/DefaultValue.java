@@ -4,6 +4,7 @@ import java.nio.charset.Charset;
 
 public class DefaultValue {
     public static final String DEFAULT_FIRST_MSG = "Hello,World!";
+    public static final String NOT_FOUND = "404";
     public static final String DEFAULT_TEST_IP = "127.0.0.1";
     public static final int DEFAULT_TEST_PORT = 8001;
     /**默认字符集*/
