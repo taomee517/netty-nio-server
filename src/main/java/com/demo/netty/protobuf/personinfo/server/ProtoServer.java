@@ -1,7 +1,7 @@
-package com.demo.netty.protobuf.server;
+package com.demo.netty.protobuf.personinfo.server;
 
-import com.demo.netty.protobuf.handler.ServerProtoHandler;
-import com.demo.netty.protobuf.pojo.RichManProto;
+import com.demo.netty.protobuf.personinfo.handler.ServerProtoHandler;
+import com.demo.netty.protobuf.personinfo.pojo.RichManProto;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

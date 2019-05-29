@@ -1,6 +1,6 @@
-package com.demo.netty.protobuf.handler;
+package com.demo.netty.protobuf.personinfo.handler;
 
-import com.demo.netty.protobuf.pojo.RichManProto;
+import com.demo.netty.protobuf.personinfo.pojo.RichManProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;

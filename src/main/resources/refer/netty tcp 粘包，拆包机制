@@ -1,0 +1,17 @@
+Netty粘包和拆包解决方案
+Netty提供了多个解码器，可以进行分包的操作，分别是：
+* LineBasedFrameDecoder （换行）
+   LineBasedFrameDecoder是回车换行解码器，如果用户发送的消息以回车换行符作为消息结束的标识，则可以直接使用Netty的LineBasedFrameDecoder对消息进行解码，只需要在初始化Netty服务端或者客户端时将LineBasedFrameDecoder正确的添加到ChannelPipeline中即可，不需要自己重新实现一套换行解码器。
+   LineBasedFrameDecoder的工作原理是它依次遍历ByteBuf中的可读字节，判断看是否有“\n”或者“\r\n”，如果有，就以此位置为结束位置，从可读索引到结束位置区间的字节就组成了一行。它是以换行符为结束标志的解码器，支持携带结束符或者不携带结束符两种解码方式，同时支持配置单行的最大长度。如果连续读取到最大长度后仍然没有发现换行符，就会抛出异常，同时忽略掉之前读到的异常码流。防止由于数据报没有携带换行符导致接收到ByteBuf无限制积压，引起系统内存溢出。
+
+* DelimiterBasedFrameDecoder（添加特殊分隔符报文来分包）
+   DelimiterBasedFrameDecoder是分隔符解码器，用户可以指定消息结束的分隔符，它可以自动完成以分隔符作为码流结束标识的消息的解码。
+   回车换行解码器实际上是一种特殊的DelimiterBasedFrameDecoder解码器。
+
+* FixedLengthFrameDecoder（使用定长的报文来分包）
+    FixedLengthFrameDecoder是固定长度解码器，它能够按照指定的长度对消息进行自动解码，开发者不需要考虑TCP的粘包/拆包等问题，非常实用。
+    对于定长消息，如果消息实际长度小于定长，则往往会进行补位操作，它在一定程度上导致了空间和资源的浪费。但是它的优点也是非常明显的，编解码比较简单，因此在实际项目中仍然有一定的应用场景。
+
+* LengthFieldBasedFrameDecoder (自定义解码器跟编码器)
+   本文介绍的重点LengthFieldBasedFrameDecoder，一般包含了消息头（head）、消息体（body）：消息头是固定的长度，一般有有以下信息 -> 是否压缩（zip）、消息类型（type or cmdid）、消息体长度（body length）；消息体长度不是固定的，其大小由消息头记载，一般记载业务交互信息。
+netty对应来说就是编码器（Encoder）跟解码器（Decoder），一般其中会有一个基本消息类对外输出
