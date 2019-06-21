@@ -81,5 +81,9 @@ public class ByteBufTest {
         readerIndex = buf.readerIndex();
         writerIndex = buf.writerIndex();
         log.info("自定义索引后，readerIndex = {} , writerIndex = {}, readableSize = {}", readerIndex, writerIndex, readableSize);
+
+        buf.resetReaderIndex();
+        buf.resetWriterIndex();
+        log.info("resetWriterIndex后：{}",buf);
     }
 }
