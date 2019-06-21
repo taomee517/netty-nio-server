@@ -1,11 +1,10 @@
 package com.demo.netty.basic.bytebuf;
 
+import com.sun.media.jfxmedia.track.Track;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.util.ByteProcessor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 
 @Slf4j
 public class ByteBufTest {
@@ -73,6 +72,14 @@ public class ByteBufTest {
         String m = new String(cache);
         log.info("读到的信息：{}", m);
         System.out.println("==================================================================");
+
+        //查询缓冲中，逗号的位置
+        int commaIndex = buf.forEachByte(ByteProcessor.FIND_COMMA);
+        log.info("逗号的位置：{}", commaIndex);
+        char w = 'W';
+        byte wByte = (byte) (w & 0xff);
+        int wIndex = buf.forEachByte(new ByteProcessor.IndexOfProcessor(wByte));
+        log.info("{}的位置：{}", w, wIndex);
 
         //自定义索引
         buf.readerIndex(3);
