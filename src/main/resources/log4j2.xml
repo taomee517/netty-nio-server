@@ -38,7 +38,7 @@
     <Loggers>
         <Logger name="org.springframework" level="WARN" />
         <Logger name="com.demo" level="INFO" />
-        <Root level="DEBUG">
+        <Root level="INFO">
             <AppenderRef ref="console"></AppenderRef>
             <AppenderRef ref="error"></AppenderRef>
             <AppenderRef ref="rollingFile"></AppenderRef>
