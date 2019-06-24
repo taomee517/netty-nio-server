@@ -5,6 +5,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -42,12 +43,14 @@ public class ProtocolSender extends ChannelInboundHandlerAdapter {
                     if (row.getCell(0) != null) {
                         XSSFCell protocol = row.getCell(0);
                         String content = protocol.toString();
-                        if (content.startsWith("6816")) {
-                            String msg = content.split(",")[6];
-                            msg = msg.replace("★",",");
-                            in = "(1" + msg + ")";
-                        }else {
-                            in = "(1" + content + ")";
+                        if (StringUtils.isNotEmpty(content)) {
+                            if (content.startsWith("6816")) {
+                                String msg = content.split(",")[6];
+                                msg = msg.replace("★",",");
+                                in = "(1" + msg + ")";
+                            }else {
+                                in = "(1" + content + ")";
+                            }
                         }
                         log.info(in);
                         ByteBuf buf = Unpooled.copiedBuffer(in, Charset.forName("UTF-8"));

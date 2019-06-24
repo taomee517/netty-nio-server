@@ -114,7 +114,7 @@
     <dependency>
       <groupId>com.fzk</groupId>
       <artifactId>otu-sdk</artifactId>
-      <version>1.2.3</version>
+      <version>1.3.5</version>
     </dependency>
     <!-- testing -->
     <dependency>
