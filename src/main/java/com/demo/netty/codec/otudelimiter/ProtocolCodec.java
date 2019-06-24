@@ -92,6 +92,7 @@ public class ProtocolCodec extends ByteToMessageDecoder {
         if(endSignIndex == -1 || endSignIndex < startSignIndex){
             return null;
         }
+        //这里遇过一个坑，不要去操作writerIndex,否则只能截取到第一条完整报文
         int length = endSignIndex - startSignIndex + 1;
         byte[] data = new byte[length];
         in.readBytes(data,0,length);
