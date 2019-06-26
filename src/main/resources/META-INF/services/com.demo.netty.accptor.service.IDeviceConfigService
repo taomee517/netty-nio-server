@@ -1,0 +1,3 @@
+com.demo.netty.accptor.service.impl.OTUConfigServiceImpl
+com.demo.netty.accptor.service.impl.BSJConfigServiceImpl
+com.demo.netty.accptor.service.impl.GL500ConfigServiceImpl

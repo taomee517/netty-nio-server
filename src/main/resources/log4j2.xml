@@ -39,6 +39,7 @@
         <Logger name="org.springframework" level="WARN" />
         <Logger name="com.demo" level="INFO" />
         <Logger name="com.fzk" level="OFF" />
+        <Logger name="io.netty" level="OFF" />
         <Root level="INFO">
             <AppenderRef ref="console"></AppenderRef>
             <AppenderRef ref="error"></AppenderRef>

@@ -67,7 +67,7 @@ public class IdleHandler extends SimpleChannelInboundHandler<Message> {
     }
 
     protected boolean isLogined(ChannelHandlerContext ctx) {
-        return NettySession.isLoginded;
+        return IdleSession.isLoginded;
     }
 
     private boolean isUpdMsg(Message msg){

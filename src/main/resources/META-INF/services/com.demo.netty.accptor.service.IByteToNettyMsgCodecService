@@ -1,0 +1,3 @@
+com.demo.netty.accptor.service.impl.OTUCodecServiceImpl
+com.demo.netty.accptor.service.impl.BSJCodecServiceImpl
+com.demo.netty.accptor.service.impl.GL500CodecServiceImpl
