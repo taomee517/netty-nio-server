@@ -59,6 +59,7 @@ public class ClientLogoutHandler extends ChannelInboundHandlerAdapter {
         try {
             ctx.fireChannelInactive();
             NettyContext.removeAll(ctx.channel());
+            logger.info("设备与平台已断开连接!");
         } catch (Exception e) {
             logger.error("设备" + entityID + "处理断开链接失败", e);
         }

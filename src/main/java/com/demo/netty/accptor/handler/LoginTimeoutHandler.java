@@ -41,7 +41,7 @@ public class LoginTimeoutHandler extends ChannelInboundHandlerAdapter {
                             finalCtx.channel().pipeline().remove(handler);
                         } else {
                             log.info("检查登陆超时,通道即将关闭{}", finalCtx.channel());
-                            finalCtx.channel().close();
+                            finalCtx.close();
                         }
                     }
                 } catch (Exception e) {
