@@ -231,8 +231,8 @@ public class NettyServerMsgHandler extends SimpleChannelInboundHandler<Message> 
         //有可能是心跳消息
         if (null != msg.getFunction()) {
             logger.info("生产消息：{}", msg.toString());
-            logger.info("send2MQ,略");
-//            send2MQ(msg);
+//            logger.info("send2MQ,略");
+            send2MQ(msg,ClientTypeEnum.getEnumByPort(port));
         }
         //响应消息
         response(ctx, msg);

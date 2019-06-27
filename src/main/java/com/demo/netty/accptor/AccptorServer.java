@@ -1,10 +1,12 @@
 package com.demo.netty.accptor;
 
 import com.blackTea.common.constants.ClientTypeEnum;
+import com.demo.netty.accptor.config.AcceptorConfig;
 import com.demo.netty.accptor.handler.ClientLogoutHandler;
 import com.demo.netty.accptor.handler.LoginTimeoutHandler;
 import com.demo.netty.accptor.handler.NettyCodec;
 import com.demo.netty.accptor.handler.NettyServerMsgHandler;
+import com.demo.netty.accptor.mq.DM_msg_down;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -17,6 +19,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
+import mq.consumer.ConsumerConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,7 +55,15 @@ public class AccptorServer {
                 Channel serverChannel = bootstrap.bind(port).sync().channel();
                 channels.add(serverChannel);
                 log.info("服务运行成功，监听{}设备上线端口:{}",ClientTypeEnum.getEnumByPort(port), port);
+                //还需要注册消息队列服务
+                ConsumerConfig config = ConsumerConfig.instance(port);
+                config.register(DM_msg_down.class);
+                config.startUp();
+                //开始注册其它配置.
+                AcceptorConfig.instance(port);
             }
+
+
             //关闭多个通道
             for (Channel ch : channels) {
                 ch.closeFuture().sync();
