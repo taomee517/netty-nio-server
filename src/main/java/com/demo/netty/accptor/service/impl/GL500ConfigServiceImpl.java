@@ -201,7 +201,7 @@ public class GL500ConfigServiceImpl implements IDeviceConfigService {
             kv.setIsOnline(false);
             List<byte[]> extend = msg.getExtend();
             if (!CollectionUtil.isEmpty(extend)) {
-                Map<String, Boolean> map = SerializeUtil.parseByte(msg.getExtend().get(0));
+                Map<String, Boolean> map = SerializeUtil.parseByte(extend.get(0));
                 boolean isReplaced = map.get(CommunicationConfig.NETTY_SESSIONKEY_isReplaced);
                 if (!isReplaced) {
                     kv.saveOrUpdate(msg.getClientType(), msg.getEntityID());

@@ -209,24 +209,6 @@ public class NettyServerMsgHandler extends SimpleChannelInboundHandler<Message> 
 
         //其他所有消息都要调用设备服务的更新kv_client对象和数据库tb_terminal表中的last_msg_time
         service.updateRDBLastMsgTime(NettySession.getClientTypeFromChannel(channel), NettySession.getEntityIDFromChannel(channel));
-
-        //如果是授时消息，则直接返回
-        /**授时的回复应该放到IDeviceConfigService处理，因为不只是OTU才有授时无线设备也有
-        if (isTimeServiceMsg(msg)) {
-            logger.info("收到授时消息");
-            Message respMsg = new Message();
-
-            respMsg.setClientType(com.demo.netty.accptor.constant.ClientTypeEnum.getEnumByPort(port).getClientType());
-            respMsg.setFunction("2".getBytes());
-            String content = DateTimeUtil.getCurrentUtcTime(DateTimeUtil.FormatInfo.DATE_yyMMddHHmmss);
-            respMsg.setTvList(Arrays.asList(new TV("721".getBytes(), content.getBytes())));
-            ctx.channel().writeAndFlush(respMsg);
-            int entityIDFromChannel = NettySession.getEntityIDFromChannel(channel);
-            boolean sendSuc = MsgSender.send(ClientTypeEnum.OTU.getClientType(), entityIDFromChannel, respMsg);
-            logger.info("发送下行消息结果:{},msg->{}", sendSuc, respMsg);
-            NettySession.removeCurrentTextMsgFromChannel(channel);
-            return;
-        }*/
         //往消息队列里面扔
         //有可能是心跳消息
         if (null != msg.getFunction()) {
@@ -251,33 +233,7 @@ public class NettyServerMsgHandler extends SimpleChannelInboundHandler<Message> 
         }
     }
 
-    /**
-     * @param msg
-     * @Author: zhangxia
-     * @Desc: 是否是授时服务请求
-     * @MethodName: isTimeServiceMsg
-     * @Date: 14:03 2019/5/24
-     * @Return: java.lang.Boolean
-     * @Version: 2.0
-     */
-    private Boolean isTimeServiceMsg(Message msg) {
-        if (Objects.isNull(msg.getFunction()) || msg.getFunction().length <= 0) {
-            return false;
-        }
-        if (Arrays.equals("1".getBytes(), msg.getFunction())) {
-            List<TV> tvList = msg.getTvList();
-            if (CollectionUtils.isEmpty(tvList) || tvList.size() <= 0) {
-                return false;
-            }
-            TV tv = tvList.get(0);
-            if (Arrays.equals("721".getBytes(), tv.getTag())) {
-                return true;
-            }
-            return false;
-        } else {
-            return false;
-        }
-    }
+
 
     /**
      * 处理session信息, 保存ttl

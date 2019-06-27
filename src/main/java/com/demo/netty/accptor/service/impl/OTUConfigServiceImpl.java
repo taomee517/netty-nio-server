@@ -13,11 +13,14 @@ import com.blackTea.common.eventbus.Eventbus;
 import com.blackTea.common.model.Message;
 import com.blackTea.common.model.TV;
 import com.blackTea.common.model.TerminalContext;
+import com.blackTea.common.msgSender.MsgSender;
+import com.blackTea.util.DateTimeUtil;
 import com.blackTea.util.StrUtil;
 import com.blackTea.util.serialize.SerializeUtil;
 import com.demo.netty.accptor.constant.MSClientEnum;
 import com.demo.netty.accptor.service.IDeviceConfigService;
 import com.demo.netty.accptor.service.ITerminalService;
+import com.demo.netty.accptor.session.NettySession;
 import com.demo.netty.accptor.util.OTUCodecUtil;
 import com.demo.netty.accptor.util.OTUMsgUtil;
 import com.fzk.otu.utils.CollectionUtil;
@@ -29,6 +32,7 @@ import com.mysirui.springcloud.api.vo.RespModel;
 import kv.m.KV_Client;
 import kv.m.KV_Terminal;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -292,7 +296,7 @@ public class OTUConfigServiceImpl implements IDeviceConfigService {
                 List<byte[]> extend = msg.getExtend();
                 KV_Terminal kv_terminal = TerminalContext.me().get(msg.getClientType(), msg.getEntityID());
                 if (!CollectionUtil.isEmpty(extend)) {
-                    Map<String, Boolean> map = SerializeUtil.parseByte(msg.getExtend().get(0));
+                    Map<String, Boolean> map = SerializeUtil.parseByte(extend.get(0));
                     boolean isReplaced = map.get(CommunicationConfig.NETTY_SESSIONKEY_isReplaced);
                     if (!isReplaced) {
 
@@ -329,6 +333,9 @@ public class OTUConfigServiceImpl implements IDeviceConfigService {
         String functionStr = new String(msg.getFunction());
         byte[] respFunction = null;
         switch (functionStr) {
+            case "1":
+                respFunction = "2".getBytes();
+                break;
             case "3":
                 respFunction = "4".getBytes();
                 break;
@@ -352,15 +359,23 @@ public class OTUConfigServiceImpl implements IDeviceConfigService {
         }
         Message resp = new Message();
         resp.setFunction(respFunction);
-        if (!isLoginMsg(msg)) {//登录消息,不用回复参数列表
+        //登录消息,不用回复参数列表
+        if (!isLoginMsg(msg)) {
             List<TV> tvList = new ArrayList<>();
-            for (TV tv : msg.getTvList()) {//只需要tag.不需要value
+            //只需要tag.不需要value
+            for (TV tv : msg.getTvList()) {
                 tvList.add(new TV(tv.getTag()));
             }
             resp.setTvList(tvList);
         }
         if("5".equals(functionStr)){
             resp = getTransResp(msg);
+        }
+        if (isTimeServiceMsg(msg)) {
+            log.info("收到授时消息");
+            resp.setClientType(ClientTypeEnum.OTU.getClientType());
+            String content = DateTimeUtil.getCurrentUtcTime(DateTimeUtil.FormatInfo.DATE_yyMMddHHmmss);
+            resp.setTvList(Arrays.asList(new TV("721".getBytes(), content.getBytes())));
         }
         return resp;
     }
@@ -395,6 +410,34 @@ public class OTUConfigServiceImpl implements IDeviceConfigService {
             updateOnline(msg, ttlStatus, context.getVehicle_id());
         } catch (Exception e) {
             log.error("更新在线状态异常", e);
+        }
+    }
+
+    /**
+     * @param msg
+     * @Author: zhangxia
+     * @Desc: 是否是授时服务请求
+     * @MethodName: isTimeServiceMsg
+     * @Date: 14:03 2019/5/24
+     * @Return: java.lang.Boolean
+     * @Version: 2.0
+     */
+    private Boolean isTimeServiceMsg(Message msg) {
+        if (Objects.isNull(msg.getFunction()) || msg.getFunction().length <= 0) {
+            return false;
+        }
+        if (Arrays.equals("1".getBytes(), msg.getFunction())) {
+            List<TV> tvList = msg.getTvList();
+            if (CollectionUtils.isEmpty(tvList) || tvList.size() <= 0) {
+                return false;
+            }
+            TV tv = tvList.get(0);
+            if (Arrays.equals("721".getBytes(), tv.getTag())) {
+                return true;
+            }
+            return false;
+        } else {
+            return false;
         }
     }
 }
