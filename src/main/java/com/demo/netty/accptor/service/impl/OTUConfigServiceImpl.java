@@ -216,7 +216,8 @@ public class OTUConfigServiceImpl implements IDeviceConfigService {
      */
     @Override
     public long getTTL4RDBLastMsgTime() {
-        return 5 * 60 * 1000L;//十分钟一次 更新数据库中lastmsgtime字段
+        //十分钟一次 更新数据库中lastmsgtime字段
+        return 5 * 60 * 1000L;
     }
 
     /**

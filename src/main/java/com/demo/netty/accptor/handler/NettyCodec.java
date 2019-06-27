@@ -35,7 +35,8 @@ public class NettyCodec extends ByteToMessageCodec<Message> {
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
         SocketAddress localAddress = ctx.channel().localAddress();
         int reqPort = Integer.valueOf(localAddress.toString().split(ADDRESS_CONNECTOR)[1]);
-        log.info("encode--客户端请求地址：{}", localAddress);
+        log.info("encode--channel服务端地址：{}", localAddress);
+        log.info("encode--channel客户端地址：{}",ctx.channel().remoteAddress());
         int clientType = ClientTypeEnum.getEnumByPort(reqPort).getClientType();
         IByteToNettyMsgCodecService servcie = SPIServiceFactory.findService(IByteToNettyMsgCodecService.class,clientType);
         String str = servcie.encode(ctx, msg, out);
@@ -51,9 +52,12 @@ public class NettyCodec extends ByteToMessageCodec<Message> {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        SocketAddress localAddress = ctx.channel().localAddress();
-        log.info("decode--客户端请求地址：{}", localAddress);
-        int reqPort = Integer.valueOf(localAddress.toString().split(ADDRESS_CONNECTOR)[1]);
+        SocketAddress serverAddr = ctx.channel().localAddress();
+        SocketAddress clientAddr = ctx.channel().remoteAddress();
+        log.info("decode--channel服务端地址：{}", serverAddr);
+        log.info("decode--channel客户端地址：{}",clientAddr);
+        log.info("channel id: {}", ctx.channel().id().asLongText());
+        int reqPort = Integer.valueOf(serverAddr.toString().split(ADDRESS_CONNECTOR)[1]);
         NettySession.recordRequestPort2Channel(ctx.channel(),reqPort);
         int clientType = ClientTypeEnum.getEnumByPort(reqPort).getClientType();
         IByteToNettyMsgCodecService servcie = SPIServiceFactory.findService(IByteToNettyMsgCodecService.class,clientType);

@@ -4,7 +4,6 @@
 package com.demo.netty.accptor.handler;
 
 
-import com.blackTea.common.acceptor.AcceptorStatusHandler;
 import com.blackTea.common.communicate.netty.config.CommunicationConfig;
 import com.blackTea.common.communicate.netty.model.NettyContext;
 import com.blackTea.common.constants.ClientTypeEnum;
@@ -36,9 +35,10 @@ import mq.producer.MsgProducer;
 import org.mortbay.util.ajax.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -171,7 +171,6 @@ public class NettyServerMsgHandler extends SimpleChannelInboundHandler<Message> 
                 //每次登陆需要冲洗记录server的uuid, 下行消息是通过MQ找到server的UUID来推送的, 每次必须不一样
                 KV_Client kv_Client = new KV_Client();
                 kv_Client.setServiceID(ConsumerConfig.instance().getServiceID()).setLoginTime(System.currentTimeMillis()).setLastMsgTime(System.currentTimeMillis()).saveOrUpdate(clientType, entityID);
-
                 //再修改当前msg的信息
                 msg.setClientType(loginResult.getClientType());
                 msg.setEntityID(loginResult.getEntityID());

@@ -41,10 +41,10 @@ public class AccptorServer {
                         @Override
                         protected void initChannel(SocketChannel ch){
                             ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast(new IdleStateHandler(60,0,0, TimeUnit.SECONDS));
+                            pipeline.addLast(new IdleStateHandler(600,600,0, TimeUnit.SECONDS));
                             pipeline.addLast(new NettyCodec());
                             //5秒不登录,就直接踢掉连接
-                            pipeline.addLast("loginTimeOuthandler", new LoginTimeoutHandler(10));
+                            pipeline.addLast("loginTimeOuthandler", new LoginTimeoutHandler(600));
                             pipeline.addLast("handler", new NettyServerMsgHandler());
                             pipeline.addLast("logoutHandler", new ClientLogoutHandler());
                         }
