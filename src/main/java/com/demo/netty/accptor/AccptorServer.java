@@ -54,7 +54,7 @@ public class AccptorServer {
             for (int port : ports) {
                 Channel serverChannel = bootstrap.bind(port).sync().channel();
                 channels.add(serverChannel);
-                log.info("服务运行成功，监听{}设备上线端口:{}",ClientTypeEnum.getEnumByPort(port), port);
+//                log.info("服务运行成功，监听{}设备上线端口:{}",ClientTypeEnum.getEnumByPort(port), port);
                 //还需要注册消息队列服务
                 ConsumerConfig config = ConsumerConfig.instance(port);
                 config.register(DM_msg_down.class);
@@ -62,8 +62,6 @@ public class AccptorServer {
                 //开始注册其它配置.
                 AcceptorConfig.instance(port);
             }
-
-
             //关闭多个通道
             for (Channel ch : channels) {
                 ch.closeFuture().sync();

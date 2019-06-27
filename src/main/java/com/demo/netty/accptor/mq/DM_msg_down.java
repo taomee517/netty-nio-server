@@ -74,7 +74,7 @@ public class DM_msg_down extends BaseMQMsgConsumer {
 
     @Override
     public MsgC getConsumerID(int port) {
-        return AcceptorConfig.instance(port).getMsgConsumer_down();
+        return ClientTypeEnum.getEnumByPort(port).getMsgDownConsumer();
     }
 
     /**
@@ -85,7 +85,7 @@ public class DM_msg_down extends BaseMQMsgConsumer {
         List<MsgT> msgTArr = new ArrayList<MsgT>();
 //        List<Integer> ports = Arrays.asList(ClientTypeEnum.OTU.getPort(), ClientTypeEnum.BSJ.getPort(), ClientTypeEnum.GL500.getPort());
 //        for(Integer port : ports){
-            msgTArr.add(AcceptorConfig.instance(port).getMsgTopic_down());
+                msgTArr.add(ClientTypeEnum.getEnumByPort(port).getMsgDownTopic());
 //        }
         return msgTArr;
     }
