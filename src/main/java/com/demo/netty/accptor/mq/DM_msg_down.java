@@ -6,7 +6,6 @@ package com.demo.netty.accptor.mq;
 import com.blackTea.common.constants.ClientTypeEnum;
 import com.blackTea.common.model.Message;
 import com.blackTea.util.log.LogUtil;
-import com.demo.netty.accptor.config.AcceptorConfig;
 import com.demo.netty.accptor.session.NettySession;
 import io.netty.channel.Channel;
 import mq.consumer.BaseMQMsgConsumer;
@@ -15,7 +14,6 @@ import mq.m.MsgC;
 import mq.m.MsgT;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
