@@ -11,12 +11,23 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.demo.netty.basic.constant.DefaultValue.DEFAULT_TEST_IP;
+import static com.demo.netty.basic.constant.DefaultValue.DEFAULT_TEST_PORT;
+
+@Slf4j
 public class IdleStateClient {
     public static void main(String[] args) {
+        connect(DEFAULT_TEST_IP,DEFAULT_TEST_PORT);
+    }
+
+
+    public static void connect(String ip, int port) {
         EventLoopGroup worker = new NioEventLoopGroup();
+        ChannelFuture future = null;
         try {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(worker).channel(NioSocketChannel.class)
@@ -30,12 +41,23 @@ public class IdleStateClient {
                             pipeline.addLast(new MyIdleClientHandler());
                         }
                     });
-            ChannelFuture future = bootstrap.connect(DefaultValue.DEFAULT_TEST_IP,DefaultValue.DEFAULT_TEST_PORT).sync();
+            future = bootstrap.connect(ip,port).sync();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            worker.shutdownGracefully();
+            //channel断开后，就关闭
+//            worker.shutdownGracefully();
+
+            //连接断开后，尝试重连
+            if (null != future) {
+                if (future.channel() != null && future.channel().isOpen()) {
+                    future.channel().close();
+                }
+            }
+            log.info("准备重连");
+            connect(ip,port);
+            log.info("重连成功");
         }
 
     }
