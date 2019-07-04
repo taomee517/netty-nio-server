@@ -5,10 +5,11 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.nio.charset.Charset;
 
-public class MyClientHandler extends ChannelInboundHandlerAdapter {
+public class MyClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
 
     @Override
@@ -23,10 +24,9 @@ public class MyClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf buf = (ByteBuf)msg;
-        String data = buf.toString(Charset.forName("utf-8"));
-        System.out.println("收到消息：" + data);
+    public void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
+        String data = msg.toString(Charset.forName("utf-8"));
+        ctx.write("客户端收到消息：" + data);
     }
 
     @Override

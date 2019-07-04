@@ -1,12 +1,12 @@
 package com.demo.netty.component.idlestate;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class MyIdleClientHandler extends ChannelInboundHandlerAdapter {
+public class MyIdleClientHandler extends SimpleChannelInboundHandler<String> {
     public static final String HEART_BEAT_MSG = "Hello,Server!";
     public static final int RETRY_TIMES = 3;
 
@@ -28,7 +28,7 @@ public class MyIdleClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         log.info("收到服务器消息：{}", msg);
     }
 
