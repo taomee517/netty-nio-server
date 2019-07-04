@@ -16,7 +16,12 @@ public class MyChannelHandler extends ChannelInboundHandlerAdapter {
         ByteBuf buf = (ByteBuf)msg;
         String data = buf.toString(Charset.forName("utf-8"));
         log.info("收到消息：{}", data);
-        ctx.writeAndFlush(msg);
+        ctx.write(msg);
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        ctx.flush();
     }
 
     @Override

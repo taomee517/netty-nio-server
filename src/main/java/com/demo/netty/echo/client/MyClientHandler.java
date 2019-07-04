@@ -26,13 +26,10 @@ public class MyClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
     public void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
         String data = msg.toString(Charset.forName("utf-8"));
-        ctx.write("客户端收到消息：" + data);
+        System.out.println("客户端收到消息：" + data);
     }
 
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-       ctx.flush();
-    }
+
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
