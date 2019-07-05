@@ -10,6 +10,16 @@ public class MyIdleServerHandler extends ChannelInboundHandlerAdapter {
     public static final String HB_ACK = "Hello,Client!";
 
     @Override
+    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+        log.info("channel注册");
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        log.info("建立连接");
+    }
+
+    @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         IdleStateEvent event = (IdleStateEvent)evt;
         if(event.equals(IdleStateEvent.READER_IDLE_STATE_EVENT)){

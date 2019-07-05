@@ -28,7 +28,7 @@ public class NettyServer {
     public static void main(String[] args) {
         EventLoopGroup boss = new NioEventLoopGroup(1);
         EventLoopGroup worker = new NioEventLoopGroup();
-        List<Integer> ports = Arrays.asList(2103, 2107, 2111);
+        List<Integer> ports = Arrays.asList(8001);
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
             final MyChannelHandler echoHandler = new MyChannelHandler();

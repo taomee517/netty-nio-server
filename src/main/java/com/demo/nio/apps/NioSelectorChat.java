@@ -1,19 +1,19 @@
-package com.demo.nio;
+package com.demo.nio.apps;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.util.*;
 
-public class NioSelectorApp {
+public class NioSelectorChat {
     public static void main(String[] args) throws Exception {
         List<Integer> ports = Arrays.asList(8001,8002,8003);
         Selector selector = Selector.open();
@@ -25,14 +25,13 @@ public class NioSelectorApp {
                 InetSocketAddress address = new InetSocketAddress(port);
                 serverSocket.bind(address);
                 serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-                System.out.println("监听端口号：" + port);
+                System.out.println("可连接端口：" + port);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         while (true){
             int number = selector.select();
-            System.out.println("创建连接数：" + number);
             Set<SelectionKey> selectionKeys = selector.selectedKeys();
             System.out.println("SelectionKeys:" + selectionKeys);
             Iterator<SelectionKey> iterator = selectionKeys.iterator();
@@ -44,7 +43,6 @@ public class NioSelectorApp {
                    socketChannel.configureBlocking(false);
                    socketChannel.register(selector,SelectionKey.OP_READ);
                    iterator.remove();
-                   System.out.println("获取客户端连接：" + socketChannel);
                }else if(selectionKey.isReadable()){
                    SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
                    int index = 0;
@@ -56,15 +54,25 @@ public class NioSelectorApp {
                            break;
                        }
                        byteBuffer.flip();
-                       socketChannel.write(byteBuffer);
+                       Charset charset = Charset.forName("UTF-8");
+                       CharsetDecoder decoder = charset.newDecoder();
+                       CharBuffer charBuffer = decoder.decode(byteBuffer.asReadOnlyBuffer());
+                       String output = charBuffer.toString();
+                       System.out.println("客户端消息:" + output);
                        index += read;
                    }
                    iterator.remove();
-                   System.out.println("读取：" + index + "数据来自于：" + socketChannel);
+                   Scanner scanner = new Scanner(System.in);
+                   String input = scanner.nextLine();
+                   byte[] msg = ("服务器消息:" + input + "\n").getBytes();
+                   ByteBuffer msgBuffer = ByteBuffer.allocate(1024);
+                   for(int i=0;i<msg.length;i++){
+                       msgBuffer.put(msg[i]);
+                   }
+                   msgBuffer.flip();
+                   socketChannel.write(msgBuffer);
                }
             }
-
         }
-
     }
 }

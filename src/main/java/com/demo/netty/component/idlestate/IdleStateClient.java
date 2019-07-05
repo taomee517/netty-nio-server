@@ -1,6 +1,5 @@
 package com.demo.netty.component.idlestate;
 
-import com.demo.netty.basic.constant.DefaultValue;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
