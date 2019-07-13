@@ -12,8 +12,8 @@ public class ByteBufTest {
          * HeapBuffer堆缓冲区可以快速分配，当不使用时也可以快速释放。
          * 它还提供了直接访问数组的方法，通过 ByteBuf.array() 来获取 byte[]数据
          */
-//        ByteBuf buf = Unpooled.buffer(10);
-        ByteBuf buf = Unpooled.directBuffer(10);
+        ByteBuf buf = Unpooled.buffer(10);
+//        ByteBuf buf = Unpooled.directBuffer(10);
         int readerIndex = buf.readerIndex();
         int writerIndex = buf.writerIndex();
         int capacity = buf.capacity();
@@ -90,6 +90,7 @@ public class ByteBufTest {
 
         buf.resetReaderIndex();
         buf.resetWriterIndex();
+//        buf.discardReadBytes();
         log.info("resetWriterIndex后：{}",buf);
     }
 }

@@ -27,7 +27,7 @@ public class ProtocolSender extends ChannelInboundHandlerAdapter {
 //        ctx.writeAndFlush(buf);
 //        System.out.println("向服务器发送消息：" + msg);
 
-        XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File("E:\\private\\test\\terminal_logs\\otu\\acceptor1.xlsx")));
+        XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File("E:\\private\\test\\terminal_logs\\otu\\acceptor.xlsx")));
         XSSFSheet sheet = null;
         String in = null;
         int count = 0;
@@ -47,9 +47,11 @@ public class ProtocolSender extends ChannelInboundHandlerAdapter {
                             if (content.startsWith("6816")) {
                                 String msg = content.split(",")[6];
                                 msg = msg.replace("★",",");
-                                in = "(1" + msg + ")";
+//                                in = "(1" + msg + ")";
+                                in = msg;
                             }else {
-                                in = "(1" + content + ")";
+//                                in = "(1" + content + ")";
+                                in = content;
                             }
                         }
                         log.info(in);
