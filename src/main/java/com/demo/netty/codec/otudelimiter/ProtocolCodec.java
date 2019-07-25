@@ -82,18 +82,25 @@ public class ProtocolCodec extends ByteToMessageDecoder {
 //        }
 //        return null;
 
-        //plan B
+        //plan B        //这里遇过一个坑，不要去操作writerIndex,否则只能截取到第一条完整报文
+
+        //找到第一个报文起始符的下标
         int startSignIndex = in.forEachByte(new ByteProcessor.IndexOfProcessor(leftWrap));
         if(startSignIndex==-1){
             return null;
         }
+        //将readerIndex置为起始符下标
         in.readerIndex(startSignIndex);
+
+        //找到第一个报文结束符的下标
         int endSignIndex = in.forEachByte(new ByteProcessor.IndexOfProcessor(rightWrap));
         if(endSignIndex == -1 || endSignIndex < startSignIndex){
             return null;
         }
-        //这里遇过一个坑，不要去操作writerIndex,否则只能截取到第一条完整报文
+        //计算报文的总长度
+        //此处不能去操作writerIndex,否则只能截取到第一条完整报文
         int length = endSignIndex - startSignIndex + 1;
+        //将报文内容写入符串，并返回
         byte[] data = new byte[length];
         in.readBytes(data,0,length);
         return new String(data);

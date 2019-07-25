@@ -38,6 +38,7 @@ public class NettyServer {
                         @Override
                         protected void initChannel(SocketChannel ch){
                             ChannelPipeline pipeline = ch.pipeline();
+//                            pipeline.addLast(new MyDecoder());
                             pipeline.addLast(echoHandler);
                         }
             });
