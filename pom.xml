@@ -24,6 +24,7 @@
     <commons-lang3-version>3.8.1</commons-lang3-version>
     <poi-version>3.9</poi-version>
     <xmlbeans-version>2.4.0</xmlbeans-version>
+    <blacktea-common-version>2.3.6</blacktea-common-version>
   </properties>
 
   <!--<dependencyManagement>-->
@@ -143,7 +144,7 @@
     <dependency>
       <groupId>com.iot</groupId>
       <artifactId>blackTea-common</artifactId>
-      <version>2.2.6</version>
+      <version>${blacktea-common-version}</version>
     </dependency>
     <!--terminal-api 本来想调用登录，登出接口，但API没有提供-->
     <dependency>

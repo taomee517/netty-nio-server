@@ -3,6 +3,9 @@ package com.demo.netty.fakedevice.kt20.handler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * 聊天室客户端初始化器
@@ -15,6 +18,7 @@ public class DeviceInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline pipeline = socketChannel.pipeline();
+        pipeline.addLast(new IdleStateHandler(0,20,0, TimeUnit.SECONDS));
         pipeline.addLast(new KT20Encoder());
         pipeline.addLast(new KT20Decoder());
         pipeline.addLast(new DeviceHandler());
