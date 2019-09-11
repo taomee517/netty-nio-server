@@ -28,7 +28,9 @@ public class DeviceHandler extends ChannelInboundHandlerAdapter {
             //鉴权消息
 //            String up = "7E010200140145332243520002465A4B2D42534A2D4B5432302D434F4E4649524D3F7E";
             //定位消息
-            String up = "7E0200002201453322435200030000000000000001015F1FDA06D0AA40000000000000190812195834010400000000B27E";
+//            String up = "7E0200002201453322435200030000000000000001015F1FDA06D0AA40000000000000190812195834010400000000B27E";
+            String temp = "7E 02 00 00 3C 01 45 33 22 43 52 0B 1B 00 00 00 00 80 12 40 02 01 C4 11 D0 06 58 D8 90 02 32 00 00 00 C8 19 09 10 12 58 38 01 04 00 00 00 07 02 08 00 00 00 00 00 00 00 00 BC 0E 00 0C 00 B2 89 86 04 41 19 18 C3 61 50 10 8F 7E";
+            String up = temp.replaceAll(" ", "");
             //心跳消息
 //            String up = "7E000200000145332243520004427E";
             //登出消息
@@ -42,7 +44,8 @@ public class DeviceHandler extends ChannelInboundHandlerAdapter {
 
         //查询位置
         if(serverMsg.contains("8201")){
-            String location = "7E0201002401453322435200487256000000000000000101C4D08C06583900000000000000190826182715010400000000E87E";
+            String location = "7E0201002401453322435200487256000000008012400201C411D00658D8900232000000C819091012583801040000000702080000000000000000BC0E000C00B2898604411918C3615010EA7E";
+//            String location = "7E0201002401453322435200487256000000000000000101C4D08C06583900000000000000190826182715010400000000E87E";
             log.info("回复位置：{}", location);
             ctx.channel().writeAndFlush(location);
             //查询能力
@@ -56,6 +59,17 @@ public class DeviceHandler extends ChannelInboundHandlerAdapter {
             String result = "7E0900000E014533224352037B41362C3723623430312C322C3223007E";
             log.info("回复控制结果：{}", result);
             ctx.channel().writeAndFlush(result);
+        }else if(serverMsg.contains("62323230")){
+            log.info("蓝牙清除指令: {}", serverMsg );
+            String clearBtCfgResp = "7E09000009014533224352698F41362C342362323230BC7E";
+            log.info("回复清除蓝牙配置：{}", clearBtCfgResp);
+            ctx.channel().writeAndFlush(clearBtCfgResp);
+        }else if(serverMsg.contains("62323033")){
+            log.info("蓝牙设置指令: {}", serverMsg );
+            String setBtCfgResp = "7E09000014014533224352C2EC41362C3423623230332C324E393253322C316364487E";
+            log.info("回复蓝牙配置结果：{}", setBtCfgResp);
+            ctx.channel().writeAndFlush(setBtCfgResp);
+            log.info("蓝牙设置成功! ");
         }
     }
 
