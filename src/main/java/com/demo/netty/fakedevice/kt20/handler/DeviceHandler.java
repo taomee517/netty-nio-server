@@ -44,7 +44,7 @@ public class DeviceHandler extends ChannelInboundHandlerAdapter {
 
         //查询位置
         if(serverMsg.contains("8201")){
-            String location = "7E0201002401453322435200487256000000008012400201C411D00658D8900232000000C819091012583801040000000702080000000000000000BC0E000C00B2898604411918C3615010EA7E";
+            String location = "7E0201003E01453322435200487256000000008012400201C411D00658D8900232000000C819091012583801040000000702080000000000000000BC0E000C00B2898604411918C3615010F07E";
 //            String location = "7E0201002401453322435200487256000000000000000101C4D08C06583900000000000000190826182715010400000000E87E";
             log.info("回复位置：{}", location);
             ctx.channel().writeAndFlush(location);
@@ -70,6 +70,11 @@ public class DeviceHandler extends ChannelInboundHandlerAdapter {
             log.info("回复蓝牙配置结果：{}", setBtCfgResp);
             ctx.channel().writeAndFlush(setBtCfgResp);
             log.info("蓝牙设置成功! ");
+        }else if(serverMsg.contains("62313031")){
+            log.info("查询版本指令: {}", serverMsg );
+            String versionResp = "7E0900005A014533224352007741362C3723623130312C6B65796C73735F6D2E626173652E313035622C323131322E64656275672E312C44595F56322E30302E3030312C76775F71335F323031372E34302C312C312C465A4B2D45374245414132363833413323507E";
+            log.info("回复版本信息：{}", versionResp);
+            ctx.channel().writeAndFlush(versionResp);
         }
     }
 
