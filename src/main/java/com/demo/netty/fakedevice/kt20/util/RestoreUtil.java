@@ -3,18 +3,9 @@ package com.demo.netty.fakedevice.kt20.util;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.nio.ByteBuffer;
-
+import static com.demo.netty.fakedevice.kt20.constant.DtuConstants.*;
 
 public class RestoreUtil {
-    /**开始、结束符*/
-    private static final byte SIGN_CODE = 0x7e;
-
-    /**转义字符相关*/
-    private static final byte ESCAPE_CHAR_E_SRC = 0x7e;
-    private static final byte ESCAPE_CHAR_D_SRC = 0x7d;
-    private static final byte[] ESCAPE_CHAR_D_TRANS = {0x7d,0x01};
-    private static final byte[] ESCAPE_CHAR_E_TRANS = {0x7d,0x02};
-
     /**
      * 还原转义前的字节数组
      * @param bytes

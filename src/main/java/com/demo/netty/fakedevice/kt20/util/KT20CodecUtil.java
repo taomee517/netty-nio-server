@@ -29,11 +29,11 @@ public class KT20CodecUtil {
     public static String Byte2StringSerialize(ByteBuf in) throws Exception {
         int readableLen = in.readableBytes();
         if (readableLen < MIN_LENGTH) {
-            return null;
+            return "";
         }
         int startSignIndex = in.forEachByte(new ByteProcessor.IndexOfProcessor(SIGN_CODE));
         if(startSignIndex==-1){
-            return null;
+            return "";
         }
         //将readerIndex置为起始符下标+1
         //因为起始符结束符是一样的，如果不往后移一位，下次到的还是起始下标
@@ -43,7 +43,7 @@ public class KT20CodecUtil {
         int endSignIndex = in.forEachByte(new ByteProcessor.IndexOfProcessor(SIGN_CODE));
         if(endSignIndex == -1 || endSignIndex <= startSignIndex){
             in.readerIndex(startSignIndex);
-            return null;
+            return "";
         }
         //计算报文的总长度
         //此处不能去操作writerIndex,否则只能截取到第一条完整报文

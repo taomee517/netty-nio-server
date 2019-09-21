@@ -1,10 +1,12 @@
 package com.demo.netty.fakedevice.kt20.handler;
 
 import com.demo.netty.fakedevice.kt20.util.KT20CodecUtil;
+import com.demo.netty.fakedevice.kt20.util.Secret2PlainUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -12,8 +14,11 @@ import java.util.List;
 public class KT20Decoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        String str = KT20CodecUtil.Byte2StringSerialize(in).toUpperCase();
-        out.add(str);
+        String str = KT20CodecUtil.Byte2StringSerialize(in);
+        if (StringUtils.isNotEmpty(str)) {
+            str = Secret2PlainUtil.secret2Plain(str);
+            out.add(str.toUpperCase());
+        }
     }
 
     @Override
