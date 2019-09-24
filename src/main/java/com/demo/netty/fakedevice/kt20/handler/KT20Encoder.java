@@ -1,5 +1,6 @@
 package com.demo.netty.fakedevice.kt20.handler;
 
+import com.demo.netty.fakedevice.kt20.util.Secret2PlainUtil;
 import com.fzk.sdk.util.BytesTranUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -14,7 +15,9 @@ public class KT20Encoder extends MessageToMessageEncoder {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Object msg, List out) throws Exception {
-        byte[] bytes = BytesTranUtil.hexStringToBytes((String)msg);
+        String downMsg = (String)msg;
+        String finalDownMsg = Secret2PlainUtil.plain2Secret(downMsg);
+        byte[] bytes = BytesTranUtil.hexStringToBytes(finalDownMsg);
         ByteBuf buf = Unpooled.buffer(bytes.length);
         buf.writeBytes(bytes);
         out.add(buf);
