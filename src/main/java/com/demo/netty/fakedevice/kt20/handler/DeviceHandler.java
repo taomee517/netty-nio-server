@@ -43,10 +43,18 @@ public class DeviceHandler extends ChannelInboundHandlerAdapter {
 //            String up = "7E000300000145332243520004437E";
             //查询结果
 //            String up = "7E01040188013620125135032300002B0000000104000000B40000000204000000000000000304000000000000000404000000000000000504000000000000000604000000000000000704000000000000001005434D4E455400000011000000001200000000130E3132332E36352E3231362E323436000000140000000015000000001600000000170E3132332E36352E3231362E32343600000018040000226600000019040000000000000020040000000000000021040000000000000022040000000000000027040000007800000028040000000000000029040000001E0000002C040000000000000050040000000000000052040000000000000053040000000000000055040000007800000056040000000A00000057040000000000000058040000000000000059040000003C0000005A04000000000000007004000000000000007104000000000000007204000000000000007304000000000000007404000000000000008004000000000000008102002C0000008202012F000000830CD4C142383838383820202020000000840101897E";
+            //设备查询 b733
+//            String up = "7E09000048014533224352000441362C3323623733332C4C53565547363054364B323039333435382C322C302C342C302C34623139656461633530396430643432633866343532393363663563373837622C6661230E7E";
+           //设备查询 b731
+//            String up = "7E0900001F014533224352000441362C3723623733312C4C5356555A363054394A323230393736322C313223337E";
+            //设备查询b734
+//            String up = "7E0900000B014533224352000441362C3123623733342C23567E";
+
             log.info("模拟设备消息: {}", up);
             ctx.channel().writeAndFlush(up);
             index++;
         }else if(index == 3){
+            //b413告警消息
             String up = "7E0900000E014533224352000441362C3723623431332C332C31237D7E";
             ctx.channel().writeAndFlush(up);
         }
@@ -108,7 +116,7 @@ public class DeviceHandler extends ChannelInboundHandlerAdapter {
         }else if(serverMsg.contains("352362383031")){
             log.info("服务器升级指令: {}", serverMsg );
             serverMsg = null;
-            String upgradeReq = "7E0900001A014533224352000441362C3523623830332C312C323131322C3230302C44595F5632627E";
+            String upgradeReq = "7E0900001A014533224352000441362C3523623830332C312C323131322C3130302C44595F5632617E";
             upgradeReq = upgradeReq.replaceAll(" ", "");
             ctx.channel().writeAndFlush(upgradeReq);
             log.info("设备发送升级请求：{}", upgradeReq);
@@ -125,11 +133,11 @@ public class DeviceHandler extends ChannelInboundHandlerAdapter {
             shardIndex ++;
             log.info("收到分片内容{}：{}",shardIndex, serverMsg);
             serverMsg = null;
-//            if (shardIndex==2) {
-//                String shardReq = "7E0900000F014533224352000441362C3523623830352C66372C66385B7E";
-//                log.info("设备发送最后分片请求：{}", shardReq);
-//                ctx.channel().writeAndFlush(shardReq);
-//            }else
+            if (shardIndex==2) {
+                String shardReq = "7E09000011014533224352000441362C3523623830352C3165662C3166301F7E";
+                log.info("设备发送最后分片请求：{}", shardReq);
+                ctx.channel().writeAndFlush(shardReq);
+            }else
                 if(shardIndex==4){
                 String shardValidReq = "7E0900000D014533224352000441362C3523623830372C312C32577E";
                 log.info("设备发送分片校验请求：{}", shardValidReq);
@@ -140,7 +148,7 @@ public class DeviceHandler extends ChannelInboundHandlerAdapter {
             log.info("收到分片校验信息：{}", serverMsg);
             serverMsg = null;
             if (shardValidIndex == 1) {
-                String shardReq = "7E0900000F014533224352000441362C3523623830372C66372C6638597E";
+                String shardReq = "7E09000011014533224352000441362C3523623830372C3165662C3166301D7E";
                 log.info("设备发送最后分片校验请求：{}", shardReq);
                 ctx.channel().writeAndFlush(shardReq);
             }else if(shardValidIndex > 1){

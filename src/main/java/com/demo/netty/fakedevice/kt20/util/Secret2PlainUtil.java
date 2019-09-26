@@ -1,10 +1,15 @@
 package com.demo.netty.fakedevice.kt20.util;
 
+import com.fzk.dtu.utils.AESUtil;
+import com.fzk.dtu.utils.BytesUtil;
+import com.fzk.dtu.utils.ParseUtil;
+import com.fzk.dtu.utils.RestoreUtil;
+import com.fzk.dtu.utils.ValidateUtil;
 import com.fzk.sdk.util.BytesTranUtil;
 
 import java.nio.ByteBuffer;
 
-import static com.demo.netty.fakedevice.kt20.constant.DtuConstants.*;
+import static com.fzk.dtu.constant.DtuConstants.*;
 
 public class Secret2PlainUtil {
     public static String secret2Plain(String in ) throws  Exception{
@@ -34,7 +39,7 @@ public class Secret2PlainUtil {
         int pack = prop >> 13 & 0x01;
         int encodeType = prop >> 10 & 0x07;
         int aesEncode = prop >> 11 & 1;
-        int contentLength = prop & 0x1ff;
+        int contentLength = prop & 0x3ff;
         int contentIndex = (pack==1)?(MIN_LENGTH-2+4):(MIN_LENGTH-2);
 
         byte[] content = new byte[contentLength];
@@ -108,7 +113,7 @@ public class Secret2PlainUtil {
         int pack = prop >> 13 & 0x01;
         int encodeType = prop >> 10 & 0x07;
         int aesEncode = prop >> 11 & 1;
-        int contentLength = prop & 0x1ff;
+        int contentLength = prop & 0x3ff;
         int contentIndex = (pack==1)?(MIN_LENGTH-2+4):(MIN_LENGTH-2);
 
         byte[] content = new byte[contentLength];
@@ -148,7 +153,11 @@ public class Secret2PlainUtil {
             bf.put(validCode);
             bf.put(SIGN_CODE);
             byte[] newMsg = ParseUtil.getReadableBytes(bf);
-            return BytesUtil.bytesToHexShortString(newMsg);
+
+            //转义
+            byte[] finalMsg = RestoreUtil.transfer(newMsg);
+
+            return BytesUtil.bytesToHexShortString(finalMsg);
         }else {
             return in;
         }

@@ -16,7 +16,10 @@ public class KT20Encoder extends MessageToMessageEncoder {
     @Override
     protected void encode(ChannelHandlerContext ctx, Object msg, List out) throws Exception {
         String downMsg = (String)msg;
-        String finalDownMsg = Secret2PlainUtil.plain2Secret(downMsg);
+        String finalDownMsg = null;
+//        if (downMsg.length()>4) {
+            finalDownMsg = Secret2PlainUtil.plain2Secret(downMsg);
+//        }
         byte[] bytes = BytesTranUtil.hexStringToBytes(finalDownMsg);
         ByteBuf buf = Unpooled.buffer(bytes.length);
         buf.writeBytes(bytes);

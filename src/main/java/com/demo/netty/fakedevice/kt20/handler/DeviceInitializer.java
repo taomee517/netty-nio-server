@@ -23,5 +23,6 @@ public class DeviceInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new KT20Decoder());
         pipeline.addLast(new DeviceHandler());
 //        pipeline.addLast(new DeviceEncodeHandler());
+//        pipeline.addLast(new DeviceTestHandler());
     }
 }
