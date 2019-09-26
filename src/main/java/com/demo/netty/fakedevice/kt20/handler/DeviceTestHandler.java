@@ -1,7 +1,6 @@
 package com.demo.netty.fakedevice.kt20.handler;
 
 import com.demo.netty.accptor.util.BytesTranUtil;
-import com.demo.netty.fakedevice.kt20.util.BytesUtil;
 import com.demo.netty.fakedevice.kt20.util.MessageBuilder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -17,34 +16,28 @@ public class DeviceTestHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         String serverMsg = ((String) msg);
-        log.info("服务器消息：{}", serverMsg);
-        if (index == 0) {
-            for (int i = 0; i<50; i++) {
-                Thread.sleep(50);
-                if(i % 5 == 0){
-                    ctx.channel().writeAndFlush("7E7E");
-                }else {
-                    String statusContent = "41362C3523623330312C303030302C31313131312C313030302C30303030302C30302C32302C302C2C2C2C3830303030302C2C3463352C3133322C2C2C302C383030302C4F2C2C383030302C383030302C2C653823";
-                    String snNo = "14533224352";
-                    String srcMsgId = "0900";
-                    byte[] content = BytesTranUtil.hexStringToBytes(statusContent);
-                    boolean aesEncode = true;
-                    String upMsg = MessageBuilder.buildMsg(snNo,srcMsgId,content,i,aesEncode);
-                    log.info("生成消息：clientMsg = {}", upMsg);
-                    ctx.channel().writeAndFlush(upMsg);
-                }
-            }
-            index ++;
-        }
+        log.info("服务器回复：{}", serverMsg);
     }
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         IdleStateEvent event = (IdleStateEvent)evt;
         if(event.equals(IdleStateEvent.WRITER_IDLE_STATE_EVENT)){
-            String heatbeat = "7E000200000145332243520004427E";
-            log.info("C ——> S");
-            ctx.channel().writeAndFlush(heatbeat);
+            if(index == 0){
+                Thread.sleep(5000);
+            }
+
+            if (index < 20) {
+                String statusContent = "41362C3723623330312C303030302C31313131312C313030302C30303030302C30302C32302C302C2C2C2C3830303030302C2C3463352C3133322C2C2C302C383030302C4F2C2C383030302C383030302C2C653823";
+                String snNo = "14533224352";
+                String srcMsgId = "0900";
+                byte[] content = BytesTranUtil.hexStringToBytes(statusContent);
+                boolean aesEncode = true;
+                String upMsg = MessageBuilder.buildMsg(snNo,srcMsgId,content,index,aesEncode);
+                log.info("压测消息: {}", upMsg);
+                ctx.channel().writeAndFlush(upMsg);
+            }
+            index ++;
         }
     }
 
