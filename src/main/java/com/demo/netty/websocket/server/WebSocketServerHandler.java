@@ -1,4 +1,4 @@
-package com.demo.netty.websocket;
+package com.demo.netty.websocket.server;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -18,8 +18,8 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, TextWebSocketFrame webSocketFrame) throws Exception {
         String text = webSocketFrame.text();
         System.out.println("收到客户端消息：" + text);
-        String content = "服务接收消息时间：" + LocalTime.now();
-        TextWebSocketFrame resp = new TextWebSocketFrame(content);
+//        String content = "服务接收消息时间：" + LocalTime.now();
+        TextWebSocketFrame resp = new TextWebSocketFrame(text);
         channelHandlerContext.writeAndFlush(resp);
     }
 

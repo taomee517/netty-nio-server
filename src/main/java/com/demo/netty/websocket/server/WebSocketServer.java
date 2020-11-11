@@ -1,4 +1,4 @@
-package com.demo.netty.websocket;
+package com.demo.netty.websocket.server;
 
 import com.demo.netty.basic.constant.DefaultValue;
 import io.netty.bootstrap.ServerBootstrap;
