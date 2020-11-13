@@ -7,6 +7,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 
 /**
  * websocket服务端初始化器
@@ -19,6 +20,7 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline pipeline = socketChannel.pipeline();
+        pipeline.addLast("idle", new IdleStateHandler(0, 20, 0));
         pipeline.addLast(new HttpServerCodec());
         pipeline.addLast(new ChunkedWriteHandler());
         //将分段后的HttpObject聚合成完整的HTTP请求或者响应
