@@ -22,7 +22,7 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
         ChannelPipeline pipeline = socketChannel.pipeline();
         pipeline.addLast("idle", new IdleStateHandler(0, 20, 0));
         pipeline.addLast(new HttpServerCodec());
-        pipeline.addLast(new ChunkedWriteHandler());
+//        pipeline.addLast(new ChunkedWriteHandler());
         //将分段后的HttpObject聚合成完整的HTTP请求或者响应
         pipeline.addLast(new HttpObjectAggregator(1024));
         //处理websocket消息
