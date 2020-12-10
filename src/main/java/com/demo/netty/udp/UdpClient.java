@@ -39,7 +39,7 @@ public class UdpClient {
                         }
                     });
             channel = bootstrap.bind(randomPort()).sync().channel();
-            channel.closeFuture().await(1000);
+            channel.closeFuture().sync();
         } finally {
         	workerGroup.shutdownGracefully();
         }

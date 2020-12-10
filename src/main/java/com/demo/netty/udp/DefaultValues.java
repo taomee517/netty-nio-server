@@ -7,5 +7,7 @@ package com.demo.netty.udp;
  */
 public class DefaultValues {
     public static final int PORT = 19557;
-    public static final String HOST = "127.0.0.1";
+//    public static final String HOST = "127.0.0.1";
+    public static final String HOST = "192.168.1.45";
+//    public static final String HOST = "192.168.1.151";
 }
